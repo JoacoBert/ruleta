@@ -10,6 +10,8 @@ public class Menu implements Runnable {
     PrintWriter canalSalida = new PrintWriter(System.out, true);
     BufferedReader canalEntrada = new BufferedReader(new InputStreamReader(System.in));
 
+    int cantidadRepeteciones = 1;
+
     public void MenuPrincipal() {
         boolean menu = true;
         Ruleta ruleta = new Ruleta();
@@ -22,8 +24,11 @@ public class Menu implements Runnable {
                 canalSalida.println("1 -- Ver premios ");
                 canalSalida.println("2 -- Tirar 100 veces por día");
                 canalSalida.println("3 -- Tirar 200 veces por día");
+                canalSalida.println("4 -- Tirar 200 veces por día - Ruleta sin 0");
+                canalSalida.println("------------- Cantidad a eleccion ------------------");
+                canalSalida.println("5 -- Tirar 100 veces por día");
                 canalSalida.println("0 -- Salir");
-                int option = leerOpcion(0, 3);
+                int option = leerOpcion(0, 6);
                 switch (option) {
                     case 1:
                         mostrarPremios();
@@ -33,6 +38,13 @@ public class Menu implements Runnable {
                         break;
                     case 3:
                         ruleta.opcionDos();
+                        break;
+                    case 4:
+                        ruleta.opcionCuatro();
+                        break;
+                    case 5:
+                        cargarCantidadRep();
+                        ruleta.opcionUnoRep(cantidadRepeteciones);
                         break;
                     case 0:
                         menu = false;
@@ -46,16 +58,23 @@ public class Menu implements Runnable {
         }
     }
 
-    private int leerOpcion(int fromValue, int toValue) {
-        int option = fromValue - 1;
-        while (option < fromValue || option > toValue) {
+    private int leerOpcion(int valorMax, int valorMin) {
+        int option = valorMax - 1;
+        while (option < valorMax || option > valorMin) {
             try {
                 option = Integer.valueOf(canalEntrada.readLine());
             } catch (Exception e) {
-                option = fromValue - 1;
+                option = valorMax - 1;
             }
         }
         return option;
+    }
+
+    private int cargarCantidadRep() throws NumberFormatException, IOException {
+
+        canalSalida.println("Ingrese la cantidad de veces que quiere repetir el proceso");
+        cantidadRepeteciones = Integer.valueOf(canalEntrada.readLine());
+        return cantidadRepeteciones;
     }
 
     private void mostrarPremios() throws NumberFormatException, IOException {
