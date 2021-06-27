@@ -27,8 +27,10 @@ public class Menu implements Runnable {
                 canalSalida.println("4 -- Tirar 200 veces por día - Ruleta sin 0");
                 canalSalida.println("------------- Cantidad a eleccion ------------------");
                 canalSalida.println("5 -- Tirar 100 veces por día");
+                canalSalida.println("6 -- Tirar 200 veces por día");
+                canalSalida.println("7 -- Tirar 200 veces por día - Ruleta sin 0");
                 canalSalida.println("0 -- Salir");
-                int option = leerOpcion(0, 6);
+                int option = leerOpcion(0, 7);
                 switch (option) {
                     case 1:
                         mostrarPremios();
@@ -45,6 +47,14 @@ public class Menu implements Runnable {
                     case 5:
                         cargarCantidadRep();
                         ruleta.opcionUnoRep(cantidadRepeteciones);
+                        break;
+                    case 6:
+                        cargarCantidadRep();
+                        ruleta.opcionDosRep(cantidadRepeteciones);
+                        break;
+                    case 7:
+                        cargarCantidadRep();
+                        ruleta.opcionCuatroRep(cantidadRepeteciones);
                         break;
                     case 0:
                         menu = false;

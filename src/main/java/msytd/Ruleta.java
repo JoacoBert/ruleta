@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Ruleta {
 
@@ -23,7 +27,9 @@ public class Ruleta {
     int maximoDineroObtenido = 0;
     int totalTiros = 0;
 
-    boolean victoriaOpcionUno;
+    boolean victoriaOpcion;
+    ArrayList diasArrayList = new ArrayList();
+    ArrayList dineroArrayList = new ArrayList();
 
     public void limpiarVariables() {
         this.dineroDisponible = 500;
@@ -86,7 +92,7 @@ public class Ruleta {
 
     public boolean controlDineroDisponible() {
 
-        if ((dineroDisponible >= 30) && (dineroDisponible <= 3600)) {
+        if ((dineroDisponible >= 30) && (dineroDisponible <= 3000)) {
 
             if (dineroDisponible > maximoDineroObtenido) {
                 // System.out.println("Tengo mas plata que antes");
@@ -98,9 +104,10 @@ public class Ruleta {
         }
     }
 
-    public void almacenarEstadisticas();
-
-
+    public void almacenarEstadisticas(int dias, int dinero) throws IOException {
+        diasArrayList.add(dias);
+        dineroArrayList.add(dinero);
+    }
 
     public boolean opcionUno() throws InterruptedException, IOException {
         if (ruleta(100, false)) {
@@ -116,10 +123,10 @@ public class Ruleta {
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
+                almacenarEstadisticas(this.diasApostando, this.dineroDisponible);
                 limpiarVariables();
-                almacenarEstadisticas();
-                //limpiarConsola();
-                victoriaOpcionUno = true;
+                // limpiarConsola();
+                victoriaOpcion = true;
 
             } else {
 
@@ -133,14 +140,14 @@ public class Ruleta {
                 System.out.println("Total tiros: " + this.totalTiros);
                 System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
                 System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
-            
+
                 limpiarVariables();
-                //limpiarConsola();
-                victoriaOpcionUno = false;
+                // limpiarConsola();
+                victoriaOpcion = false;
 
             }
         }
-        return victoriaOpcionUno;
+        return victoriaOpcion;
 
     }
 
@@ -148,16 +155,37 @@ public class Ruleta {
 
         int victorias = 0;
         for (int i = 0; i < cantidadRepeteciones; i++) {
-            if (opcionUno()){
-                victorias ++;
+            if (opcionUno()) {
+                victorias++;
             }
         }
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Total intentos: " + cantidadRepeteciones);
         System.out.println("Victorias: " + victorias);
+        System.out.println("Derrotas: " + (cantidadRepeteciones - victorias));
+        canalSalida.println("Presione una tecla para ver las estadisticas de las victorias");
+        String option = canalEntrada.readLine();
+
+        canalSalida.println("||=========================================================================||");
+        canalSalida.println("||     Nº. VICTORIA     ||     DIAS APOSTANDO     ||     DINERO GANADO     ||");
+        canalSalida.println("||-------------------------------------------------------------------------||");
+
+        for (int j = 0; j < diasArrayList.size(); j++) {
+
+            canalSalida.println("||           " + (j + 1) + "          ||            " + diasArrayList.get(j)
+                    + "          ||        " + dineroArrayList.get(j) + "           ||");
+            canalSalida.println("||-------------------------------------------------------------------------||");
+        }
+
+        diasArrayList.clear();
+        dineroArrayList.clear();
         limpiarConsola();
 
     }
 
-    public void opcionDos() throws InterruptedException, IOException {
+    public boolean opcionDos() throws InterruptedException, IOException {
         if (ruleta(200, false)) {
             // System.out.println("Dia " + this.diasApostando);
             // System.out.println("Dinero disponible: " + this.dineroDisponible);
@@ -175,8 +203,10 @@ public class Ruleta {
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
+                almacenarEstadisticas(this.diasApostando, this.dineroDisponible);
                 limpiarVariables();
                 limpiarConsola();
+                victoriaOpcion = true;
 
             } else {
                 this.totalTiros = this.totalTiros + (this.diasApostando * 200);
@@ -191,15 +221,51 @@ public class Ruleta {
                 System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
                 System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
                 limpiarVariables();
-                limpiarConsola();
+                // limpiarConsola();
+                victoriaOpcion = false;
 
             }
 
         }
+        return victoriaOpcion;
 
     }
 
-    public void opcionCuatro() throws IOException, InterruptedException {
+    public void opcionDosRep(int cantidadRepeteciones) throws IOException, InterruptedException {
+
+        int victorias = 0;
+        for (int i = 0; i < cantidadRepeteciones; i++) {
+            if (opcionDos()) {
+                victorias++;
+            }
+        }
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Total intentos: " + cantidadRepeteciones);
+        System.out.println("Victorias: " + victorias);
+        System.out.println("Derrotas: " + (cantidadRepeteciones - victorias));
+        canalSalida.println("Presione una tecla para ver las estadisticas de las victorias");
+        String option = canalEntrada.readLine();
+
+        canalSalida.println("||=========================================================================||");
+        canalSalida.println("||     Nº. VICTORIA     ||     DIAS APOSTANDO     ||     DINERO GANADO     ||");
+        canalSalida.println("||-------------------------------------------------------------------------||");
+
+        for (int j = 0; j < diasArrayList.size(); j++) {
+
+            canalSalida.println("||           " + (j + 1) + "          ||            " + diasArrayList.get(j)
+                    + "          ||        " + dineroArrayList.get(j) + "           ||");
+            canalSalida.println("||-------------------------------------------------------------------------||");
+        }
+
+        diasArrayList.clear();
+        dineroArrayList.clear();
+        limpiarConsola();
+
+    }
+
+    public boolean opcionCuatro() throws IOException, InterruptedException {
         if (ruleta(200, true)) {
             // System.out.println("Dia " + this.diasApostando);
             // System.out.println("Dinero disponible: " + this.dineroDisponible);
@@ -217,8 +283,8 @@ public class Ruleta {
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
                 limpiarVariables();
-                limpiarConsola();
-
+                // limpiarConsola();
+                victoriaOpcion = true;
             } else {
                 this.totalTiros = this.totalTiros + (this.diasApostando * 200);
                 System.out.print("\033[H\033[2J");
@@ -231,11 +297,48 @@ public class Ruleta {
                 System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
                 System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
                 limpiarVariables();
-                limpiarConsola();
+                // limpiarConsola();
+                victoriaOpcion = false;
 
             }
 
         }
+
+        return victoriaOpcion;
+
+    }
+
+    public void opcionCuatroRep(int cantidadRepeteciones) throws IOException, InterruptedException {
+
+        int victorias = 0;
+        for (int i = 0; i < cantidadRepeteciones; i++) {
+            if (opcionCuatro()) {
+                victorias++;
+            }
+        }
+
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        System.out.println("Total intentos: " + cantidadRepeteciones);
+        System.out.println("Victorias: " + victorias);
+        System.out.println("Derrotas: " + (cantidadRepeteciones - victorias));
+        canalSalida.println("Presione una tecla para ver las estadisticas de las victorias");
+        String option = canalEntrada.readLine();
+
+        canalSalida.println("||=========================================================================||");
+        canalSalida.println("||     Nº. VICTORIA     ||     DIAS APOSTANDO     ||     DINERO GANADO     ||");
+        canalSalida.println("||-------------------------------------------------------------------------||");
+
+        for (int j = 0; j < diasArrayList.size(); j++) {
+
+            canalSalida.println("||           " + (j + 1) + "          ||            " + diasArrayList.get(j)
+                    + "          ||        " + dineroArrayList.get(j) + "           ||");
+            canalSalida.println("||-------------------------------------------------------------------------||");
+        }
+
+        diasArrayList.clear();
+        dineroArrayList.clear();
+        limpiarConsola();
 
     }
 
