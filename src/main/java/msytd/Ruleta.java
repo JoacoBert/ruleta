@@ -23,6 +23,8 @@ public class Ruleta {
     int maximoDineroObtenido = 0;
     int totalTiros = 0;
 
+    boolean victoriaOpcionUno;
+
     public void limpiarVariables() {
         this.dineroDisponible = 500;
         this.dineroApostado = 30;
@@ -38,12 +40,18 @@ public class Ruleta {
         System.out.flush();
     }
 
-    public int tirar() {
+    public int tirar(boolean sinCero) {
 
-        Random aleatorio = new Random();
+        Random random = new Random();
         // Generar aleatorio entre 0 y 36
-        int intAletorio = aleatorio.nextInt(37);
-        return intAletorio;
+        int generarAleatorio = random.nextInt(37);
+
+        if (sinCero && (generarAleatorio == 0)) {
+            tirar(true);
+            // System.out.println("Este numero no puede salir: " + generarAleatorio);
+        }
+
+        return generarAleatorio;
 
     }
 
@@ -90,50 +98,80 @@ public class Ruleta {
         }
     }
 
-    public void opcionUno() throws InterruptedException, IOException {
-        if (ruleta(100)) {
+    public void almacenarEstadisticas();
+
+
+
+    public boolean opcionUno() throws InterruptedException, IOException {
+        if (ruleta(100, false)) {
             this.diasApostando = this.diasApostando + 1;
             opcionUno();
         } else {
             if (controlSalida()) {
-                /*
-                 * System.out.print("\033[H\033[2J"); System.out.flush();
-                 */;
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 100 tiros   -----------------");
+                System.out.println("------------------------------------------------------");
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
                 limpiarVariables();
-                limpiarConsola();
+                almacenarEstadisticas();
+                //limpiarConsola();
+                victoriaOpcionUno = true;
 
             } else {
-                /*
-                 * System.out.print("\033[H\033[2J"); System.out.flush();
-                 */
+
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
                 this.totalTiros = this.totalTiros + (this.diasApostando * 100);
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 100 tiros   -----------------");
+                System.out.println("------------------------------------------------------");
                 System.out.println("Llego a la Ruina!!!");
                 System.out.println("Total tiros: " + this.totalTiros);
                 System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
                 System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
+            
                 limpiarVariables();
-                limpiarConsola();
+                //limpiarConsola();
+                victoriaOpcionUno = false;
+
             }
         }
+        return victoriaOpcionUno;
+
+    }
+
+    public void opcionUnoRep(int cantidadRepeteciones) throws IOException, InterruptedException {
+
+        int victorias = 0;
+        for (int i = 0; i < cantidadRepeteciones; i++) {
+            if (opcionUno()){
+                victorias ++;
+            }
+        }
+        System.out.println("Victorias: " + victorias);
+        limpiarConsola();
 
     }
 
     public void opcionDos() throws InterruptedException, IOException {
-        if (ruleta(150)) {
-            //System.out.println("Dia " + this.diasApostando);
-            //System.out.println("Dinero disponible: " + this.dineroDisponible);
+        if (ruleta(200, false)) {
+            // System.out.println("Dia " + this.diasApostando);
+            // System.out.println("Dinero disponible: " + this.dineroDisponible);
             this.diasApostando = this.diasApostando + 1;
             this.dineroDisponible = 500;
             opcionDos();
         } else {
             if (controlSalida()) {
 
-                /*
-                 * System.out.print("\033[H\033[2J"); System.out.flush();
-                 */
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 200 tiros   -----------------");
+                System.out.println("------------------------------------------------------");
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
@@ -142,9 +180,51 @@ public class Ruleta {
 
             } else {
                 this.totalTiros = this.totalTiros + (this.diasApostando * 200);
-                /*
-                 * System.out.print("\033[H\033[2J"); System.out.flush();
-                 */
+
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 200 tiros   -----------------");
+                System.out.println("------------------------------------------------------");
+                System.out.println("Llego a la Ruina!!!");
+                System.out.println("Total tiros: " + this.totalTiros);
+                System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
+                System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
+                limpiarVariables();
+                limpiarConsola();
+
+            }
+
+        }
+
+    }
+
+    public void opcionCuatro() throws IOException, InterruptedException {
+        if (ruleta(200, true)) {
+            // System.out.println("Dia " + this.diasApostando);
+            // System.out.println("Dinero disponible: " + this.dineroDisponible);
+            this.diasApostando = this.diasApostando + 1;
+            this.dineroDisponible = 500;
+            opcionCuatro();
+        } else {
+            if (controlSalida()) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 200 tiros   -----------------");
+                System.out.println("------------------------------------------------------");
+                System.out.println("GANOOOOOOOO!!!! ");
+                System.out.println("Dias apostando: " + this.diasApostando + " dias");
+                System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
+                limpiarVariables();
+                limpiarConsola();
+
+            } else {
+                this.totalTiros = this.totalTiros + (this.diasApostando * 200);
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+                System.out.println("------------------------------------------------------");
+                System.out.println("---------------  Opción: 200 tiros   -----------------");
                 System.out.println("------------------------------------------------------");
                 System.out.println("Llego a la Ruina!!!");
                 System.out.println("Total tiros: " + this.totalTiros);
@@ -167,13 +247,13 @@ public class Ruleta {
         }
     }
 
-    public boolean ruleta(int cantidadTiros) throws InterruptedException, IOException {
+    public boolean ruleta(int cantidadTiros, boolean sinCero) throws InterruptedException, IOException {
 
         boolean puedeSeguirApostando = true;
 
         for (int i = 0; i < cantidadTiros; i++) {
-            int a = tirar();
-            controlJugada(a);
+            int numeroRuleta = tirar(sinCero);
+            controlJugada(numeroRuleta);
             if (!controlDineroDisponible()) {
                 // System.out.println("LLEGUE A " + i + " TIROS");
                 this.totalTiros = i;
