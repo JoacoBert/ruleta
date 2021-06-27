@@ -12,6 +12,7 @@ public class Menu implements Runnable {
 
     public void MenuPrincipal() {
         boolean menu = true;
+        Ruleta ruleta = new Ruleta();
         while (menu) {
             try {
                 canalSalida.println("||==============================================================||");
@@ -19,16 +20,19 @@ public class Menu implements Runnable {
                 canalSalida.println("||==============================================================||");
                 canalSalida.println("Seleccione una opción del menú");
                 canalSalida.println("1 -- Ver premios ");
-                canalSalida.println("2 -- Girar 100 veces");
+                canalSalida.println("2 -- Tirar 100 veces por día");
+                canalSalida.println("3 -- Tirar 200 veces por día");
                 canalSalida.println("0 -- Salir");
-                int option = leerOpcion(0, 2);
+                int option = leerOpcion(0, 3);
                 switch (option) {
                     case 1:
                         mostrarPremios();
                         break;
                     case 2:
-                        Ruleta ruleta = new Ruleta();
                         ruleta.opcionUno();
+                        break;
+                    case 3:
+                        ruleta.opcionDos();
                         break;
                     case 0:
                         menu = false;
