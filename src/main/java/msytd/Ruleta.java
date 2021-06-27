@@ -7,9 +7,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class Ruleta {
 
     PrintWriter canalSalida = new PrintWriter(System.out, true);
@@ -104,9 +101,9 @@ public class Ruleta {
         }
     }
 
-    public void almacenarEstadisticas(int dias, int dinero) throws IOException {
-        diasArrayList.add(dias);
-        dineroArrayList.add(dinero);
+    public void almacenarEstadisticas() throws IOException {
+        diasArrayList.add(this.diasApostando);
+        dineroArrayList.add(this.dineroDisponible);
     }
 
     public boolean opcionUno() throws InterruptedException, IOException {
@@ -123,7 +120,7 @@ public class Ruleta {
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
-                almacenarEstadisticas(this.diasApostando, this.dineroDisponible);
+                almacenarEstadisticas();
                 limpiarVariables();
                 // limpiarConsola();
                 victoriaOpcion = true;
@@ -168,9 +165,17 @@ public class Ruleta {
         canalSalida.println("Presione una tecla para ver las estadisticas de las victorias");
         String option = canalEntrada.readLine();
 
-        canalSalida.println("||=========================================================================||");
-        canalSalida.println("||     Nº. VICTORIA     ||     DIAS APOSTANDO     ||     DINERO GANADO     ||");
-        canalSalida.println("||-------------------------------------------------------------------------||");
+        mostrarEstadisticas();
+
+    }
+
+    public void mostrarEstadisticas() throws IOException {
+        canalSalida.println(
+                "||========================================================================================||");
+        canalSalida.println(
+                "||  Nº. VICTORIA  || DIAS APOSTANDO ||  DINERO GANADO ||  Nº. INTENTO ||  CANTIDAD TIROS  ||");
+        canalSalida.println(
+                "||----------------------------------------------------------------------------------------||");
 
         for (int j = 0; j < diasArrayList.size(); j++) {
 
@@ -182,7 +187,6 @@ public class Ruleta {
         diasArrayList.clear();
         dineroArrayList.clear();
         limpiarConsola();
-
     }
 
     public boolean opcionDos() throws InterruptedException, IOException {
@@ -282,6 +286,7 @@ public class Ruleta {
                 System.out.println("GANOOOOOOOO!!!! ");
                 System.out.println("Dias apostando: " + this.diasApostando + " dias");
                 System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
+                almacenarEstadisticas(this.diasApostando, this.dineroDisponible);
                 limpiarVariables();
                 // limpiarConsola();
                 victoriaOpcion = true;
@@ -325,9 +330,12 @@ public class Ruleta {
         canalSalida.println("Presione una tecla para ver las estadisticas de las victorias");
         String option = canalEntrada.readLine();
 
-        canalSalida.println("||=========================================================================||");
-        canalSalida.println("||     Nº. VICTORIA     ||     DIAS APOSTANDO     ||     DINERO GANADO     ||");
-        canalSalida.println("||-------------------------------------------------------------------------||");
+        canalSalida.println(
+                "||========================================================================================||");
+        canalSalida.println(
+                "||  Nº. VICTORIA  || DIAS APOSTANDO ||  DINERO GANADO ||  Nº. INTENTO ||  CANTIDAD TIROS  ||");
+        canalSalida.println(
+                "||----------------------------------------------------------------------------------------||");
 
         for (int j = 0; j < diasArrayList.size(); j++) {
 
