@@ -11,6 +11,7 @@ public class Menu implements Runnable {
     BufferedReader canalEntrada = new BufferedReader(new InputStreamReader(System.in));
 
     int cantidadRepeteciones = 1;
+    int cantidadDineroApuesta = 30;
 
     public void MenuPrincipal() {
         boolean menu = true;
@@ -22,10 +23,11 @@ public class Menu implements Runnable {
                 canalSalida.println("||==============================================================||");
                 canalSalida.println("Seleccione una opción del menú");
                 canalSalida.println("1 -- Ver premios ");
-                canalSalida.println("2 -- Seleccionar Apuesta");
-                canalSalida.println("3 -- Tirar 100 veces por día");
-                canalSalida.println("4 -- Tirar 200 veces por día");
-                canalSalida.println("5 -- Tirar 200 veces por día - Ruleta sin 0");
+                canalSalida.println("2 -- Seleccionar Dinero a Apostar");
+                canalSalida.println("3 -- Seleccionar Tipo Apuesta");
+                canalSalida.println("4 -- Tirar 100 veces por día");
+                canalSalida.println("5 -- Tirar 200 veces por día");
+                canalSalida.println("6 -- Tirar 200 veces por día - Ruleta sin 0");
                 canalSalida.println("0 -- Salir");
                 int option = leerOpcion(0, 7);
                 switch (option) {
@@ -33,17 +35,21 @@ public class Menu implements Runnable {
                         mostrarPremios();
                         break;
                     case 2:
-                        MenuApuestas();
+                        cargarCantidadApostar();
+                        ruleta.setDineroApuesta(cantidadDineroApuesta);
                         break;
                     case 3:
-                        cargarCantidadRep();
-                        ruleta.opcionUnoRep(cantidadRepeteciones);
+                        MenuApuestas();
                         break;
                     case 4:
                         cargarCantidadRep();
-                        ruleta.opcionDosRep(cantidadRepeteciones);
+                        ruleta.opcionUnoRep(cantidadRepeteciones);
                         break;
                     case 5:
+                        cargarCantidadRep();
+                        ruleta.opcionDosRep(cantidadRepeteciones);
+                        break;
+                    case 6:
                         cargarCantidadRep();
                         ruleta.opcionCuatroRep(cantidadRepeteciones);
                         break;
@@ -76,6 +82,13 @@ public class Menu implements Runnable {
         canalSalida.println("Ingrese la cantidad de veces que quiere repetir el proceso");
         cantidadRepeteciones = Integer.valueOf(canalEntrada.readLine());
         return cantidadRepeteciones;
+    }
+
+    private int cargarCantidadApostar() throws NumberFormatException, IOException {
+
+        canalSalida.println("Ingrese la cantidad de dinero que quiere apostar");
+        cantidadDineroApuesta = Integer.valueOf(canalEntrada.readLine());
+        return cantidadDineroApuesta;
     }
 
     private void mostrarPremios() throws NumberFormatException, IOException {
@@ -130,7 +143,7 @@ public class Menu implements Runnable {
                         menu = false;
                         break;
                     case 2:
-                        ruleta.setApuesta("2Numero");
+                        ruleta.setApuesta("2Numeros");
                         menu = false;
                         break;
                     case 3:
@@ -138,7 +151,7 @@ public class Menu implements Runnable {
                         menu = false;
                         break;
                     case 4:
-                        ruleta.setApuesta("4Numero");
+                        ruleta.setApuesta("4Numeros");
                         menu = false;
                         break;
                     case 5:

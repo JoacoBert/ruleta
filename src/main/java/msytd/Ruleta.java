@@ -22,14 +22,20 @@ public class Ruleta {
     int filas[] = { 1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34 };
 
     int dineroDisponible = 500;
-    int dineroApostado = 30;
     int diasApostando = 0;
     int maximoDineroObtenido = 0;
     int totalTiros = 0;
     int cantIntentos = 0;
 
-    String tipoApuesta = "Color";
+    public static int dineroApostado = 30;
+    public static int gananciaApuesta = 2;
+    public static int numeroApostado;
+    public static int numeroApostado2;
+
+    public static String tipoApuesta = "Color";
     public static String colorApuesta = "Rojo";
+    public static String mMApuesta;
+    public static String pIApuesta;
 
     boolean victoriaOpcion;
     // ArrayList para almacenar estadisticas
@@ -41,7 +47,6 @@ public class Ruleta {
     // Se limpian las variables para la proxima iteracion
     public void limpiarVariables() {
         this.dineroDisponible = 500;
-        this.dineroApostado = 30;
         this.diasApostando = 0;
         this.maximoDineroObtenido = 0;
         this.totalTiros = 0;
@@ -56,7 +61,7 @@ public class Ruleta {
     }
 
     // Genera 2 numeros consecutivos del tablero
-    public void dosNumerosConsecutivos() {
+    public void dosNumerosConsecutivos() throws IOException {
 
         int numeroAleatorio = tirar(false);
         int numeroAleatorio2;
@@ -76,8 +81,11 @@ public class Ruleta {
             }
         }
 
-        System.out.println("NUmero 1: " + numeroAleatorio);
-        System.out.println("NUmero 2: " + numeroAleatorio2);
+        numeroApostado = numeroAleatorio;
+        numeroApostado2 = numeroAleatorio2;
+
+        System.out.println("---------------------------------------------");
+        System.out.println("Los números a apostar son el " + numeroApostado + " y el " + numeroApostado2);
 
     }
 
@@ -91,7 +99,7 @@ public class Ruleta {
         Random random = new Random();
         int iFila = random.nextInt(11);
 
-        System.out.println(filas[iFila]);
+        System.out.println("Se aposto a la fila que comienza con el número " + filas[iFila]);
         return filas[iFila];
     }
 
@@ -116,12 +124,15 @@ public class Ruleta {
             }
         }
 
-        System.out.println(fila);
-        System.out.println(filaContigua);
+        System.out.println("Se aposto a la fila que comienza con el número " + filaContigua);
 
+        numeroApostado = fila;
+        numeroApostado2 = filaContigua;
     }
 
-    public void setMayorMenor() {
+    // Genera un aleatorio entre 0 y 1, y a partir de ese num selecciona Mayor o
+    // Menor
+    public String setMayorMenor() {
 
         Random random = new Random();
         int aleatorio = random.nextInt(2);
@@ -133,16 +144,18 @@ public class Ruleta {
             tipoApuestaMM = "Menor";
         }
 
-        System.out.println("APUESTA: " + tipoApuestaMM);
+        System.out.println("Se aposto por " + tipoApuestaMM);
+
+        return tipoApuestaMM;
     }
 
+    // Genera un aleatorio entre 0 y 1, y a partir de ese num selecciona Rojo o
+    // Negro
     public String setColor() {
 
         Random random = new Random();
         int aleatorio = random.nextInt(2);
         String tipoApuestaColor;
-
-        System.out.println("ale " + aleatorio);
 
         if (aleatorio == 0) {
             tipoApuestaColor = "Rojo";
@@ -150,11 +163,13 @@ public class Ruleta {
             tipoApuestaColor = "Negro";
         }
 
-        System.out.println("APUESTA: " + tipoApuestaColor);
+        System.out.println("Se aposto por " + tipoApuestaColor);
         return tipoApuestaColor;
     }
 
-    public void setPares() {
+    // Genera un aleatorio entre 0 y 1, y a partir de ese num selecciona Pares o
+    // Nones
+    public String setPares() {
         Random random = new Random();
         int aleatorio = random.nextInt(2);
         String tipoApuestaPares;
@@ -165,12 +180,14 @@ public class Ruleta {
             tipoApuestaPares = "Nones";
         }
 
-        System.out.println("APUESTA: " + tipoApuestaPares);
+        System.out.println("Se aposto por " + tipoApuestaPares);
+
+        return tipoApuestaPares;
 
     }
 
     // Girar ruleta
-    public int tirar(boolean sinCero) {
+    public int tirar(boolean sinCero) throws IOException {
 
         Random random = new Random();
         // Generar aleatorio entre 0 y 36
@@ -185,40 +202,50 @@ public class Ruleta {
 
     }
 
+    public void setDineroApuesta(int dineroApuesta) {
+        this.dineroApostado = dineroApuesta;
+    }
+
+    // Setea que tipo de apuesta se selecciono y cuando paga en caso de victoria.
+    // Por defecto: Color y Rojo.
     public void setApuesta(String apuestaSeleccionada) throws IOException {
         this.tipoApuesta = apuestaSeleccionada;
         switch (apuestaSeleccionada) {
             case "Numero":
-                System.out.println(apuestaSeleccionada);
-                int num = tirar(false);
-                System.out.println(num);
+                /*
+                 * System.out.println(apuestaSeleccionada); System.out.println(numeroApostado);
+                 */
+                numeroApostado = tirar(false);
+                System.out.println("---------------------------------------------");
+                System.out.println("El número a apostar es el " + numeroApostado);
+                this.gananciaApuesta = 36;
                 break;
-            case "2Numero":
-                System.out.println(apuestaSeleccionada);
+            case "2Numeros":
                 dosNumerosConsecutivos();
+                this.gananciaApuesta = 18;
                 break;
             case "Calle":
-                setCalle();
-                System.out.println(apuestaSeleccionada);
+                numeroApostado = setCalle();
+                this.gananciaApuesta = 12;
                 break;
-            case "4Numero":
+            case "4Numeros":
                 cuatroNumerosConsecutivos();
-                System.out.println(apuestaSeleccionada);
                 break;
             case "Semicalle":
                 setSemiCalle();
-                System.out.println(apuestaSeleccionada);
+                this.gananciaApuesta = 6;
                 break;
             case "Menor":
-                setMayorMenor();
-                System.out.println(apuestaSeleccionada);
+                this.gananciaApuesta = 2;
+                this.mMApuesta = setMayorMenor();
                 break;
             case "Color":
+                this.gananciaApuesta = 2;
                 this.colorApuesta = setColor();
                 break;
             case "Pares":
-                setPares();
-                System.out.println(apuestaSeleccionada);
+                this.gananciaApuesta = 2;
+                this.pIApuesta = setPares();
                 break;
         }
 
@@ -226,58 +253,133 @@ public class Ruleta {
 
     }
 
+    // CONTROLES PARA APUESTAS
+
+    public void controlNumero(int numeroRuleta, int numApostado) {
+
+        if (numeroRuleta == numApostado) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
+    public void controlDosNumeros(int numeroRuleta, int numApostado, int numApostado2) {
+
+        if ((numeroRuleta == numApostado) || (numeroRuleta == numApostado2)) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
+    public void controlCalle(int numeroRuleta, int numApostado) {
+
+        if ((numeroRuleta == numApostado)
+                || (numeroRuleta == (numApostado + 1) || (numeroRuleta == (numApostado + 2)))) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
+    public void controlSemiCalle(int numeroRuleta, int numApostado, int numApostado2) {
+
+        if ((numeroRuleta == numApostado)
+                || (numeroRuleta == (numApostado + 1) || (numeroRuleta == (numApostado + 2)))) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else if ((numeroRuleta == numApostado2)
+                || (numeroRuleta == (numApostado2 + 1) || (numeroRuleta == (numApostado2 + 2)))) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
+    public void controlMenor(int numeroRuleta, String mmApuesta) {
+
+        if ((numeroRuleta <= 18) && (mmApuesta == "Menor")) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else if ((numeroRuleta > 18) && (mmApuesta == "Mayor")) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
     public void controlColor(int numeroRuleta, String color) {
 
         if (colorNumero[numeroRuleta] == color) {
             // System.out.println("ROJO el " + numeroRuleta);
-            calcularApuesta(dineroApostado, true);
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
         } else {
             // System.out.println("NEGRO el " + numeroRuleta);
-            calcularApuesta(dineroApostado, false);
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
         }
     }
 
-    // Controla dependiendo el numero a que color corresponde
+    public void controlPares(int numeroRuleta, String piApuesta) {
+
+        if (numeroRuleta == 0) {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        } else if ((numeroRuleta % 2 == 0) && (piApuesta == "Pares")) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else if ((numeroRuleta % 2 != 0) && (piApuesta == "Nones")) {
+            calcularApuesta(dineroApostado, gananciaApuesta, true);
+        } else {
+            calcularApuesta(dineroApostado, gananciaApuesta, false);
+        }
+    }
+
+    // Controla dependiendo la apuesta seleccionada.
     public void controlJugada(int numeroRuleta) {
         // System.out.println(this.tipoApuesta);
         switch (this.tipoApuesta) {
             case "Numero":
+                /*
+                 * System.out.println("Numero apostado " + this.numeroApostado);
+                 * System.out.println("Numero ruleta " + numeroRuleta);
+                 */
+                controlNumero(numeroRuleta, this.numeroApostado);
                 break;
-            case "2Numero":
+            case "2Numeros":
+                controlDosNumeros(numeroRuleta, this.numeroApostado, this.numeroApostado2);
                 break;
             case "Calle":
-
+                controlCalle(numeroRuleta, this.numeroApostado);
                 break;
-            case "4Numero":
-
+            case "4Numeros":
+                cuatroNumerosConsecutivos();
                 break;
             case "Semicalle":
-
+                controlSemiCalle(numeroRuleta, this.numeroApostado, this.numeroApostado2);
                 break;
             case "Menor":
-
+                controlMenor(numeroRuleta, this.mMApuesta);
                 break;
             case "Color":
                 controlColor(numeroRuleta, this.colorApuesta);
                 break;
             case "Pares":
-
+                controlPares(numeroRuleta, this.pIApuesta);
                 break;
         }
 
     }
 
     // Control para saber si gano o perdio dinero
-    public int calcularApuesta(int apuesta, boolean gano) {
+    public int calcularApuesta(int apuesta, int valorApuesta, boolean gano) {
 
         // Se resta la apuesta que realizo
         this.dineroDisponible = this.dineroDisponible - apuesta;
 
         if (gano) {
-            // System.out.println("apuesta " + apuesta);
-            // System.out.println("Dinero " + dineroDisponible);
-            // System.out.println("Dinero ganado " + (apuesta * 2));
-            this.dineroDisponible = this.dineroDisponible + (apuesta * 2);
+            /*
+             * System.out.println("apuesta " + apuesta); System.out.println("Dinero " +
+             * dineroDisponible); System.out.println("Dinero ganado " + (apuesta *
+             * valorApuesta));
+             */
+            this.dineroDisponible = this.dineroDisponible + (apuesta * valorApuesta);
             // System.out.println("En este momento tengo " + dineroDisponible + " pesos");
         }
 
@@ -288,7 +390,7 @@ public class Ruleta {
     // Control para saber si con el dinero disponible puede seguir apostando
     public boolean controlDineroDisponible() {
 
-        if ((dineroDisponible >= 30) && (dineroDisponible <= 3000)) {
+        if ((dineroDisponible >= this.dineroApostado) && (dineroDisponible <= 3000)) {
 
             if (dineroDisponible > maximoDineroObtenido) {
                 // System.out.println("Tengo mas plata que antes");
@@ -316,6 +418,8 @@ public class Ruleta {
             System.out.println("No hay estadisticas para mostrar porque no hubo victorias");
             limpiarConsola();
         } else {
+            System.out.println("Tipo de apuesta: " + this.tipoApuesta);
+
             canalSalida.println(
                     "||========================================================================================||");
             canalSalida.println(
@@ -349,6 +453,7 @@ public class Ruleta {
         System.out.println("---------------  Opción: " + tiros + " tiros   -----------------");
         System.out.println("------------------------------------------------------");
         System.out.println("GANOOOOOOOO!!!! ");
+        System.out.println("Tipo de apuesta: " + this.tipoApuesta);
         System.out.println("Dias apostando: " + this.diasApostando + " dias");
         System.out.println("Dinero ganado: " + this.dineroDisponible + " pesos");
         System.out.println("Total tiros: " + this.totalTiros);
@@ -365,6 +470,7 @@ public class Ruleta {
         System.out.println("---------------  Opción: " + tiros + " tiros   -----------------");
         System.out.println("------------------------------------------------------");
         System.out.println("Llego a la Ruina!!!");
+        System.out.println("Tipo de apuesta: " + this.tipoApuesta);
         System.out.println("Total tiros: " + this.totalTiros);
         System.out.println("Máximo dinero obtenido: " + this.maximoDineroObtenido);
         System.out.println("Perdio el dinero luego de " + this.diasApostando + " dias");
