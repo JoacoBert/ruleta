@@ -22,13 +22,10 @@ public class Menu implements Runnable {
                 canalSalida.println("||==============================================================||");
                 canalSalida.println("Seleccione una opción del menú");
                 canalSalida.println("1 -- Ver premios ");
-                canalSalida.println("2 -- Tirar 100 veces por día");
-                canalSalida.println("3 -- Tirar 200 veces por día");
-                canalSalida.println("4 -- Tirar 200 veces por día - Ruleta sin 0");
-                canalSalida.println("------------- Cantidad a eleccion ------------------");
-                canalSalida.println("5 -- Tirar 100 veces por día");
-                canalSalida.println("6 -- Tirar 200 veces por día");
-                canalSalida.println("7 -- Tirar 200 veces por día - Ruleta sin 0");
+                canalSalida.println("2 -- Seleccionar Apuesta");
+                canalSalida.println("3 -- Tirar 100 veces por día");
+                canalSalida.println("4 -- Tirar 200 veces por día");
+                canalSalida.println("5 -- Tirar 200 veces por día - Ruleta sin 0");
                 canalSalida.println("0 -- Salir");
                 int option = leerOpcion(0, 7);
                 switch (option) {
@@ -36,23 +33,17 @@ public class Menu implements Runnable {
                         mostrarPremios();
                         break;
                     case 2:
-                        ruleta.opcionUno();
+                        MenuApuestas();
                         break;
                     case 3:
-                        ruleta.opcionDos();
-                        break;
-                    case 4:
-                        ruleta.opcionCuatro();
-                        break;
-                    case 5:
                         cargarCantidadRep();
                         ruleta.opcionUnoRep(cantidadRepeteciones);
                         break;
-                    case 6:
+                    case 4:
                         cargarCantidadRep();
                         ruleta.opcionDosRep(cantidadRepeteciones);
                         break;
-                    case 7:
+                    case 5:
                         cargarCantidadRep();
                         ruleta.opcionCuatroRep(cantidadRepeteciones);
                         break;
@@ -114,6 +105,68 @@ public class Menu implements Runnable {
         System.out.print("\033[H\033[2J");
         System.out.flush();
 
+    }
+
+    public void MenuApuestas() {
+        boolean menu = true;
+        Ruleta ruleta = new Ruleta();
+        while (menu) {
+            try {
+                canalSalida.println("=======================================================================");
+                canalSalida.println("Seleccione la apuesta a realizar");
+                canalSalida.println("1 -- Numero (0 - 36) ");
+                canalSalida.println("2 -- 2 numeros consecutivos");
+                canalSalida.println("3 -- Fila (Calle)");
+                canalSalida.println("4 -- 4 numeros unidos");
+                canalSalida.println("5 -- 2 filas consec. (Semicalle)");
+                canalSalida.println("6 -- Menor(1 a 18)/Mayor(19 a 36))");
+                canalSalida.println("7 -- Color (Rojo o Negro)");
+                canalSalida.println("8 -- Pares y nones ");
+                canalSalida.println("0 -- Volver al menu principal");
+                int option = leerOpcion(0, 8);
+                switch (option) {
+                    case 1:
+                        ruleta.setApuesta("Numero");
+                        menu = false;
+                        break;
+                    case 2:
+                        ruleta.setApuesta("2Numero");
+                        menu = false;
+                        break;
+                    case 3:
+                        ruleta.setApuesta("Calle");
+                        menu = false;
+                        break;
+                    case 4:
+                        ruleta.setApuesta("4Numero");
+                        menu = false;
+                        break;
+                    case 5:
+                        ruleta.setApuesta("Semicalle");
+                        menu = false;
+                        break;
+                    case 6:
+                        ruleta.setApuesta("Menor");
+                        menu = false;
+                        break;
+                    case 7:
+                        ruleta.setApuesta("Color");
+                        menu = false;
+                        break;
+                    case 8:
+                        ruleta.setApuesta("Pares");
+                        menu = false;
+                        break;
+                    case 0:
+                        menu = false;
+                        break;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override
