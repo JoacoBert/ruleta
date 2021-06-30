@@ -96,7 +96,7 @@ public class Menu implements Runnable {
         canalSalida.println("||=====================================================================||");
         canalSalida.println("||              APUESTA            ||            PREMIO                ||");
         canalSalida.println("||---------------------------------------------------------------------||");
-        canalSalida.println("||            Num 0 -36            ||    36 veces la cant. apostada    ||");
+        canalSalida.println("||            Num 0 - 36           ||    36 veces la cant. apostada    ||");
         canalSalida.println("||---------------------------------------------------------------------||");
         canalSalida.println("||       2 Num consecutivos        ||    18 veces la cant. apostada    ||");
         canalSalida.println("||---------------------------------------------------------------------||");
@@ -106,7 +106,7 @@ public class Menu implements Runnable {
         canalSalida.println("||---------------------------------------------------------------------||");
         canalSalida.println("||   2 filas consec. (Semicalle)   ||    6 veces la cant. apostada     ||");
         canalSalida.println("||---------------------------------------------------------------------||");
-        canalSalida.println("||  Menor(1 a 18)/Mayor(19 a 36)   ||    3 veces la cant. apostada     ||");
+        canalSalida.println("||  Menor(1 a 18)/Mayor(19 a 36)   ||    2 veces la cant. apostada     ||");
         canalSalida.println("||---------------------------------------------------------------------||");
         canalSalida.println("||      Color (Rojo o Negro)       ||    2 veces la cant. apostada     ||");
         canalSalida.println("||---------------------------------------------------------------------||");
