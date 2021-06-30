@@ -419,6 +419,7 @@ public class Ruleta {
             limpiarConsola();
         } else {
             System.out.println("Tipo de apuesta: " + this.tipoApuesta);
+            System.out.println("Dinero de la apuesta: " + this.dineroApostado);
 
             canalSalida.println(
                     "||========================================================================================||");
@@ -575,6 +576,7 @@ public class Ruleta {
             if (opcionDos(cantidadRepeteciones)) {
                 victorias++;
             }
+            this.cantIntentos = i;
         }
 
         if (cantidadRepeteciones > 1) {
@@ -630,6 +632,7 @@ public class Ruleta {
             if (opcionCuatro(cantidadRepeteciones)) {
                 victorias++;
             }
+            this.cantIntentos = i;
         }
 
         if (cantidadRepeteciones > 1) {
