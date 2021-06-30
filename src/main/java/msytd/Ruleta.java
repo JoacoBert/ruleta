@@ -91,7 +91,7 @@ public class Ruleta {
 
     // Genera 4 numeros del tablero
     public void cuatroNumerosConsecutivos() {
-        System.out.println("EN PROCESO");
+        System.out.println("Por el momento esta apuesta no se encuentra disponible. Estamos trabajando para brindarle un mejor servicio");
     }
 
     // Genera un aleatorio que es el inicio de una fila
@@ -540,7 +540,7 @@ public class Ruleta {
     public boolean opcionDos(int cantidadRepeteciones) throws InterruptedException, IOException {
         if (ruleta(200, false)) {
             this.diasApostando = this.diasApostando + 1;
-            // this.dineroDisponible = 500;
+            this.dineroDisponible = 500;
             opcionDos(cantidadRepeteciones);
         } else {
             if (controlSalida()) {
@@ -597,7 +597,7 @@ public class Ruleta {
     public boolean opcionCuatro(int cantidadRepeteciones) throws IOException, InterruptedException {
         if (ruleta(200, true)) {
             this.diasApostando = this.diasApostando + 1;
-            // this.dineroDisponible = 500;
+            this.dineroDisponible = 500;
             opcionCuatro(cantidadRepeteciones);
         } else {
             if (controlSalida()) {
